@@ -24,14 +24,19 @@ Orquestador modular diseñado para la portabilidad absoluta. Gestiona entornos (
 
 ### 1. Gestión de Paquetes
 ```bash
-./dots apply <paquete> [accion] [argumentos]
-# Ejemplo: Aplicar todo el entorno swaydots
+./dots install <paquete> [variante] [argumentos]
+# Ejemplo: Instalar con variante debian
+./dots install i3dotsbyloonyx debian
+
+./dots apply <paquete> [variante] [argumentos]
+# Ejemplo: Aplicar configuración actual (alias de install)
 ./dots apply swaydots
 
+./dots run <paquete> <accion> [argumentos]
 # Ejemplo: Ejecutar solo el lanzador de swaydots
-./dots apply swaydots launcher
+./dots run swaydots launcher
 ```
-Nota: El comando apply es opcional si el primer argumento es el nombre de un paquete.
+Nota: Si no se especifica comando, el sistema intentará detectar si el segundo argumento es una acción (secuencia/script). Si no lo es, se asume `install`.
 
 ### 2. Exportación e Importación (Portabilidad)
 ```bash
@@ -41,6 +46,7 @@ Nota: El comando apply es opcional si el primer argumento es el nombre de un paq
 # Importar un paquete desde un archivo
 ./dots import mi_setup.tar.gz
 ```
+
 
 ### 3. Argumentos Dirigidos (-P:prefijo)
 Envía parámetros a scripts específicos de la secuencia:

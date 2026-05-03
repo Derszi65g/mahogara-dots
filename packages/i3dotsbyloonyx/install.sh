@@ -15,7 +15,7 @@ echo "Instalando i3dotsbyloonyx (Variante: $VARIANT_NAME)..."
 
 # 2. Instalar dependencias
 if [ -n "$PKG_LIST" ]; then
-    $PKG_MANAGER $PKG_INSTALL_CMD $PKG_LIST
+    eval "$PKG_MANAGER $PKG_INSTALL_CMD $PKG_LIST"
 fi
 
 # 3. Nerd Fonts (JetBrainsMono y Hack)
@@ -42,7 +42,7 @@ ln -sf "$PACKAGE_DIR/dotfiles/rofi" "$HOME/.config/rofi"
 ln -sf "$PACKAGE_DIR/dotfiles/kitty" "$HOME/.config/kitty"
 ln -sf "$PACKAGE_DIR/dotfiles/picom" "$HOME/.config/picom"
 
-# 6. Copiar Wallpaper inicial si no existe
+# 6. Copiar Wallpaper inicial si no existewa
 [ ! -d "$HOME/wall" ] && cp -r "$PACKAGE_DIR/dotfiles/wall" "$HOME/wall"
 
 echo "Instalación completada para $VARIANT_NAME."
