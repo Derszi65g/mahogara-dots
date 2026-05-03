@@ -11,12 +11,12 @@ export STATE_DIR="$CORE_DIR/state"
 GENERAL_ARGS=()
 declare -A TARGETED_ARGS
 CURRENT_TARGET="GENERAL"
-COMMAND=""
+COMMAND="apply"
 PACKAGE_NAME=""
 ACTION_NAME=""
 
 # 2. Parseo de Comandos y Argumentos
-if [[ "$1" =~ ^(export|import|apply|install|run)$ ]]; then
+if [[ "$1" == "export" || "$1" == "import" || "$1" == "apply" || "$1" == "install" ]]; then
     COMMAND="$1"
     shift
 fi
@@ -32,7 +32,7 @@ while [[ $# -gt 0 ]]; do
             if [ "$CURRENT_TARGET" == "GENERAL" ]; then
                 if [ -z "$PACKAGE_NAME" ] && [[ ! "$1" =~ ^- ]]; then
                     PACKAGE_NAME="$1"
-                elif [ -z "$ACTION_NAME" ] && [[ ! "$1" =~ ^- ]]; then
+                elif [ -z "$ACTION_NAME" ] && [[ ! "$1" =~ ^- ]] && [ "$COMMAND" != "install" ]; then
                     ACTION_NAME="$1"
                 else
                     GENERAL_ARGS+=("$1")
@@ -45,7 +45,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# 3. Lógica de Comandos (export/import)
+# 3. Lógica de Comandos (export/import/install)
 case "$COMMAND" in
     export)
         [ -z "$PACKAGE_NAME" ] && { echo "Error: especifica paquete a exportar." >&2; exit 1; }
@@ -61,9 +61,20 @@ case "$COMMAND" in
         echo "Importado correctamente."
         exit 0
         ;;
+    install)
+        [ -z "$PACKAGE_NAME" ] && { echo "Error: especifica paquete a instalar." >&2; exit 1; }
+        export PACKAGE_DIR="$PACKAGES_DIR/$PACKAGE_NAME"
+        if [ -x "$PACKAGE_DIR/install.sh" ]; then
+            "$PACKAGE_DIR/install.sh" "${GENERAL_ARGS[@]}"
+            exit 0
+        else
+            echo "Error: el paquete '$PACKAGE_NAME' no tiene script de instalación." >&2
+            exit 1
+        fi
+        ;;
 esac
 
-# 4. Determinar Paquete
+# 4. Aplicar Paquete (Apply)
 if [ -z "$PACKAGE_NAME" ]; then
     if [ -n "$CURRENT_ENV" ]; then
         PACKAGE_NAME="$CURRENT_ENV"
@@ -83,41 +94,24 @@ fi
 source "$ENV_CONFIG"
 
 # 5. Determinar Secuencia a Ejecutar
-if [[ "$COMMAND" == "apply" || "$COMMAND" == "install" ]]; then
-    # Para apply/install, ACTION_NAME es en realidad un argumento (variante)
-    if [ -n "$ACTION_NAME" ]; then
-        GENERAL_ARGS=("$ACTION_NAME" "${GENERAL_ARGS[@]}")
-        ACTION_NAME=""
-    fi
-    FINAL_SEQUENCE=("${DOT_SEQUENCE[@]}")
-elif [ -n "$ACTION_NAME" ] || [ "$COMMAND" == "run" ]; then
-    # Intentar detectar acción (secuencia o script)
+if [ -n "$ACTION_NAME" ]; then
     var_action="DOT_SEQUENCE_${ACTION_NAME^^}"
     declare -n SELECTED_SEQUENCE="$var_action"
     
     if [[ -n "${SELECTED_SEQUENCE[*]}" ]]; then
+        # Si existe la secuencia, la usamos
         FINAL_SEQUENCE=("${SELECTED_SEQUENCE[@]}")
-    elif [ -x "$PACKAGE_DIR/bin/$ACTION_NAME" ] || [ -x "$PACKAGE_DIR/bin/${ACTION_NAME}.sh" ] || [ -x "$BIN_DIR/$ACTION_NAME" ] || [ -x "$BIN_DIR/${ACTION_NAME}.sh" ]; then
-        FINAL_SEQUENCE=("$ACTION_NAME")
-    elif [ "$COMMAND" == "run" ]; then
-        echo "Error: Acción '$ACTION_NAME' no encontrada para $PACKAGE_NAME" >&2
-        exit 1
     else
-        # Si no se especificó comando y no es una acción, asumimos apply/install
-        COMMAND="install"
-        GENERAL_ARGS=("$ACTION_NAME" "${GENERAL_ARGS[@]}")
-        ACTION_NAME=""
-        FINAL_SEQUENCE=("${DOT_SEQUENCE[@]}")
+        # Si no existe secuencia, la accion es el script mismo
+        FINAL_SEQUENCE=("$ACTION_NAME")
     fi
 else
-    # Por defecto, si no hay acción ni comando
-    COMMAND="install"
+    # Si no hay acción, usar la secuencia por defecto (DOT_SEQUENCE)
+    if [[ -z "${DOT_SEQUENCE[*]}" ]]; then
+        echo "Aviso: DOT_SEQUENCE vacia para $PACKAGE_NAME"
+        exit 0
+    fi
     FINAL_SEQUENCE=("${DOT_SEQUENCE[@]}")
-fi
-
-# Ejecutar Script de Instalación (Solo para apply/install)
-if [[ "$COMMAND" == "apply" || "$COMMAND" == "install" ]]; then
-    [ -x "$PACKAGE_DIR/install.sh" ] && "$PACKAGE_DIR/install.sh" "${GENERAL_ARGS[@]}"
 fi
 
 # 6. Ejecutar Secuencia Seleccionada
