@@ -51,12 +51,12 @@ else
     done <<< "$wallpapers_found"
     
     if [[ "$SEL_BIN" == *"rofi"* ]]; then
-        # Caso específico Rofi: requiere -format 's' y permite fallbacks de estilo
-        STYLE="${WP_SEL_STYLE:--theme-str 'element-icon{size: 450px;}' -theme-str 'element-text{horizontal-align: 0.5;}'}"
-        FINAL_NAME=$(echo -e "$options" | "$SEL_BIN" "${SEL_ARGS[@]}" $STYLE -format 's')
+        # Caso específico Rofi: requiere -format 's'
+        # Usamos eval para que las comillas en WP_SEL_STYLE se interpreten correctamente
+        eval "FINAL_NAME=\$(echo -e \"\$options\" | \"\$SEL_BIN\" \"\${SEL_ARGS[@]}\" $WP_SEL_STYLE -format 's')"
     else
-        # Caso genérico (Wofi, Fuzzel, etc): No pasar flags de Rofi
-        FINAL_NAME=$(echo -e "$options" | "$SEL_BIN" "${SEL_ARGS[@]}" $WP_SEL_STYLE)
+        # Caso genérico (Wofi, Fuzzel, etc)
+        eval "FINAL_NAME=\$(echo -e \"\$options\" | \"\$SEL_BIN\" \"\${SEL_ARGS[@]}\" $WP_SEL_STYLE)"
     fi
 
     [[ -z "$FINAL_NAME" ]] && exit 0
@@ -65,6 +65,7 @@ fi
 
 # 3. Guardar Estado
 if [[ -n "$FINAL_PATH" ]]; then
+    mkdir -p "$(dirname "$CURRENT_WALLPAPER_LINK")"
     ln -sf "$FINAL_PATH" "$CURRENT_WALLPAPER_LINK"
     echo "$FINAL_PATH" > "$LAST_WALLPAPER_PATH_FILE"
 fi

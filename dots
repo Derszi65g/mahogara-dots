@@ -66,6 +66,12 @@ case "$COMMAND" in
         export PACKAGE_DIR="$PACKAGES_DIR/$PACKAGE_NAME"
         if [ -x "$PACKAGE_DIR/install.sh" ]; then
             "$PACKAGE_DIR/install.sh" "${GENERAL_ARGS[@]}"
+            
+            # Aplicar configuración básica sin correr toda la secuencia (evita Rofi)
+            echo "Aplicando configuración inicial..."
+            export CURRENT_ENV="$PACKAGE_NAME"
+            [ -f "$PACKAGE_DIR/config.env" ] && source "$PACKAGE_DIR/config.env"
+            "$BIN_DIR/apply_dots.sh"
             exit 0
         else
             echo "Error: el paquete '$PACKAGE_NAME' no tiene script de instalación." >&2

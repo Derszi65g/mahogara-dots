@@ -15,7 +15,7 @@ echo "Instalando i3dotsbyloonyx (Variante: $VARIANT_NAME)..."
 
 # 2. Instalar dependencias
 if [ -n "$PKG_LIST" ]; then
-    $PKG_MANAGER $PKG_INSTALL_CMD $PKG_LIST
+    eval "$PKG_MANAGER $PKG_INSTALL_CMD $PKG_LIST"
 fi
 
 # 3. Nerd Fonts (JetBrainsMono y Hack)

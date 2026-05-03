@@ -5,9 +5,10 @@
 POLY_SYSTEM_CONFIG="$HOME/.config/polybar/system.ini"
 
 if [ -f "$POLY_SYSTEM_CONFIG" ] && [ -n "$OS_ICON" ]; then
-    # Reemplazar el icono en el modulo launcher
-    # Buscamos la linea content= y cambiamos el icono
-    sed -i "s|content=.*|content= $OS_ICON |g" "$POLY_SYSTEM_CONFIG"
+    # Reemplazar el icono en el modulo launcher preservando el enlace simbólico
+    # Buscamos la sección [module/launcher] y reemplazamos el format que le sigue
+    target_file="$(readlink -f "$POLY_SYSTEM_CONFIG")"
+    sed -i "/\[module\/launcher\]/,/format=/ s|format=.*|format= $OS_ICON |" "$target_file"
     
     # Reiniciar polybar si está corriendo
     if pgrep -x polybar > /dev/null; then
