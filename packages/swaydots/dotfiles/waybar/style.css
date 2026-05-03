@@ -1,0 +1,166 @@
+@import url("colors.css");
+
+* {
+    font-family:
+        "JetBrainsMono Nerd Font", "hack Nerd Font", FontAwesome, sans-serif;
+    font-size: 10px; /* Mantener fuente delgada */
+    font-weight: normal;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    text-shadow: none;
+    transition-duration: 0s;
+    color: @foreground;
+}
+
+window#waybar {
+    background-color: @background_rgba;
+    color: @foreground;
+}
+
+/* Estilo base para TODOS los módulos */
+#custom-launcher,
+#cpu,
+#memory,
+#workspaces, /* <--- CAMBIADO DE #sway-workspaces A #workspaces */
+#backlight,
+#clock,
+#temperature,
+#pulseaudio,
+#battery,
+#tray,
+#custom-cpu-power {
+    background-color: @background_alt_rgba;
+    color: @foreground;
+    padding: 1px 10px;
+    margin: 2px 3px;
+    border-radius: 0px;
+    min-height: 16px; /* Mantiene la barra delgada */
+}
+
+/* Ajustes individuales */
+#custom-launcher {
+    color: @primary;
+    font-size: 13px;
+    padding: 2px 8px;
+}
+
+/* Los estilos para los BOTONES DENTRO de #workspaces */
+#workspaces button {
+    /* <--- CAMBIADO */
+    background-color: transparent;
+    color: @foreground; /* O un color específico para no enfocados si lo prefieres */
+    padding: 0px 8px;
+    margin: 1px 1px;
+    border-radius: 7px;
+    min-width: 16px;
+    min-height: 14px;
+}
+
+#workspaces button:hover {
+    /* <--- CAMBIADO */
+    background-color: alpha(@primary, 0.3);
+    color: @foreground;
+}
+
+#workspaces button.focused {
+    /* <--- CAMBIADO */
+    background-color: @primary;
+    color: @background_original; /* Contraste para el texto del workspace enfocado */
+}
+
+#workspaces button.urgent {
+    /* <--- CAMBIADO */
+    background-color: @red;
+    color: @background_original; /* Contraste para el texto del workspace urgente */
+}
+
+/* Resto de los estilos (temperatura, pulseaudio, battery, tray, etc.) */
+#clock {
+}
+
+#temperature.critical {
+    color: @red;
+}
+
+#pulseaudio.muted {
+    color: @red;
+}
+
+@keyframes battery-charging-fill {
+    0% {
+        background-size: 0% 100%;
+    }
+    /* Puedes añadir más pasos intermedios si quieres una animación menos lineal,
+       similar a tu ejemplo original, pero para un llenado continuo, 0% y 100% es suficiente.
+    25% {
+        background-size: 25% 100%;
+    }
+    50% {
+        background-size: 50% 100%;
+    }
+    75% {
+        background-size: 75% 100%;
+    }
+    */
+    100% {
+        background-size: 100% 100%; /* Llenar completamente el fondo */
+    }
+}
+
+/* Estilos de la batería (EXISTENTE Y MODIFICADO) */
+#battery.charging {
+    /* color: @green;  <-- ESTA LÍNEA ORIGINAL CAMBIA EL COLOR DEL TEXTO A VERDE */
+    /* Para que el texto sea legible sobre el fondo animado verde,
+       cambiamos el color del texto a algo que contraste, como el color de fondo original. */
+    color: @background_original;
+
+    /* Configuración de la animación de llenado */
+    background-image: linear-gradient(
+        to right,
+        @green,
+        @green
+    ); /* El color de la barra de carga */
+    background-repeat: no-repeat;
+    background-position: left center; /* La animación comienza desde la izquierda */
+    /* background-size se controla mediante la animación */
+    animation-name: battery-charging-fill;
+    animation-duration: 2s; /* Duración de un ciclo de llenado, ajusta a tu gusto */
+    animation-iteration-count: infinite; /* Repetir la animación indefinidamente */
+    animation-timing-function: linear; /* Un llenado a velocidad constante */
+    /* Opcional: un borde para simular la carcasa de la batería si lo deseas */
+    /* border: 1px solid alpha(@green, 0.5); */
+}
+
+#battery.warning {
+    color: @yellow;
+    /* Si está cargando Y en advertencia, la animación de carga aún se aplicará al fondo.
+       El texto será amarillo, lo cual debería seguir siendo legible sobre el fondo verde animado. */
+}
+
+#battery.critical {
+    color: @red;
+    /* Similar al warning, si está cargando y crítico, el texto será rojo. */
+}
+
+#battery.full {
+    animation: none; /* Detener la animación de carga */
+    background-image: none; /* Quitar el fondo de la animación */
+    color: @green; /* O el color que prefieras para "lleno" */
+}
+#battery.charging.full {
+    /* Si está lleno y aún tiene la clase charging (algunos sistemas) */
+    animation: none;
+    background-image: none;
+    color: @green; /* O @foreground si @green era para la animación */
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @red;
+    border-radius: 6px;
+}

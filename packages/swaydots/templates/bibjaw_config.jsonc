@@ -1,0 +1,171 @@
+{
+  "layer": "top",
+  "height": 16,
+  "spacing": 4,
+  "margin-top": 2,
+  "margin-left": 5,
+  "margin-right": 5,
+    "modules-left": [
+      "custom/rofi",
+      "hyprland/workspaces",
+      "hyprland/window",
+      "hyprland/submap"
+    ],
+    "modules-center": [
+      "clock"
+    ],
+    "modules-right": [
+      "backlight",
+      "pulseaudio",
+      "battery",
+      "tray"
+    ],    "custom/rofi": {
+      "format": "<span>󰣇</span>",    "on-click": "rofi -show drun -disable-history -show-icons -theme-str 'window { width: 22% ; location: northwest; margin: 10px 0 0 10px; } listview { lines: 20; }'",
+    "on-click-right": "~/.config/custom_scripts/power.sh",
+    "escape": true,
+    "tooltip": false
+  },
+  // Modules configuration
+  "sway/workspaces": {
+    "disable-scroll": true,
+    "active-only": false,
+    "all-outputs": true,
+    "warp-on-scroll": false,
+    "format": "{icon}",
+    "format-icons": {
+      "1": "<span>󰧨</span>",
+      "2": "<span>󰈹</span>",
+      "3": "<span></span>",
+      "4": "<span></span>",
+      "5": "<span></span>",
+      "6": "<span>󰭛</span>",
+      "7": "<span>󱓷</span>",
+      "8": "<span>󰚀</span>"
+    }
+  },
+  "sway/window": {
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color13.hex%%' > 󰣆 </span> {app_id}",
+    "separate-outputs": true,
+    "tooltip": false
+  },
+  "sway/mode": {
+    "format": " {}",
+    "max-length": 50
+  },
+  "hyprland/workspaces": {
+    "disable-scroll": true,
+    "active-only": false,
+    "all-outputs": true,
+    "warp-on-scroll": false,
+    "format": "{name}"
+  },
+  "hyprland/window": {
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color13.hex%%' > 󰻀 </span> {class}",
+    "separate-outputs": true,
+    "icon": false,
+    "tooltip": false
+  },
+  "hyprland/submap": {
+    "format": " {}",
+    "max-length": 50
+  },
+  "tray": {
+    "icon-size": 14,
+    "spacing": 8
+  },
+  "disk": {
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color9.hex%%' >  </span> {free}",
+    "interval": 20
+  },
+  "cpu": {
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color9.hex%%' >  </span> {usage}%",
+    "tooltip": false,
+    "interval": 1
+  },
+  "custom/cpu_temp": {
+    "exec": "~/.config/waybar/bibjaw99/waybar_block_1/scripts/waybarTemp.sh",
+    "return-type": "json",
+    "interval": 2,
+    "format": "{}",
+    "tooltip": false
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color11.hex%%' > 󰞏 </span> {percent}%",
+    "tooltip": false,
+    "on-click-right": "~/.config/custom_scripts/wlsunset.sh"
+  },
+  "custom/memory": {
+    "exec": "~/.config/waybar/bibjaw99/waybar_block_1/scripts/memory_usage.sh",
+    "interval": 2,
+    "return-type": "json",
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color4.hex%%' >  </span> {}"
+  },
+  "pulseaudio": {
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color12.hex%%' >  </span> {volume}%",
+    "format-muted": "<span color='#%%color0.hex%%' bgcolor='#%%color9.hex%%' >  </span> {volume}%",
+    "format-bluetooth": "<span color='#%%color0.hex%%' bgcolor='#%%color12.hex%%' > 󰂰 </span> {volume}%",
+    "format-bluetooth-muted": "<span color='#%%color0.hex%%' bgcolor='#%%color9.hex%%' > 󰂲 </span> {volume}%",
+    "format-source": "{volume}% ",
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-right": "blueman-manager",
+    "tooltip": false,
+    "max-volume": 130
+  },
+  "battery#bat2": {
+    "bat": "BAT2"
+  },
+  "battery": {
+    "interval": 1,
+    "states": {
+      "good": 99,
+      "warning": 30,
+      "critical": 20
+    },
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ],
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color6.hex%%' > {icon} </span> {capacity}%",
+    "format-critical": "<span color='#%%color0.hex%%' bgcolor='#%%color1.hex%%' > {icon} </span> {capacity}%!!",
+    "format-warning": "<span color='#%%color0.hex%%' bgcolor='#%%color9.hex%%' > {icon} </span> {capacity}%",
+    "format-full": "<span color='#%%color0.hex%%' bgcolor='#%%color6.hex%%' > {icon} </span> {capacity}%",
+    "format-charging": "<span color='#%%color0.hex%%' bgcolor='#%%color6.hex%%' > 󰂅 </span> {capacity}%",
+    "format-charging-warning": "<span color='#%%color0.hex%%' bgcolor='#%%color9.hex%%' > 󰢝 </span> {capacity}%",
+    "format-charging-critical": "<span color='#%%color0.hex%%' bgcolor='#%%color1.hex%%' > 󰢜 </span> {capacity}%",
+    "format-plugged": "<span color='#%%color0.hex%%' bgcolor='#%%color6.hex%%' > 󰂅 </span> {capacity}%",
+    "format-alt": "<span color='#%%color0.hex%%' bgcolor='#%%color6.hex%%' > 󱧥 </span> {time}",
+    "tooltip": false
+  },
+  "network": {
+    "interval": 2,
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color13.hex%%'> 󱘖 </span> {bandwidthDownBits}",
+    "format-wifi": "<span color='#%%color0.hex%%' bgcolor='#%%color13.hex%%'> {icon} </span> {bandwidthDownBits}",
+    "format-ethernet": "<span color='#%%color0.hex%%' bgcolor='#%%color13.hex%%'> 󰈀 </span> {bandwidthDownBits}",
+    "format-icons": [
+      "󰤫",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ],
+    "tooltip": false,
+    "states": {
+      "normal": 25
+    }
+  },
+  "clock": {
+    // "timezone": "America/New_York",
+    "format": "<span color='#%%color0.hex%%' bgcolor='#%%color10.hex%%' >  </span> {:%a %d | %H:%M}",
+    "tooltip": false,
+    "interval": 1
+  }
+}

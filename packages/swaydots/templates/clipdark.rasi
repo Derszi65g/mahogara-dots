@@ -1,0 +1,16 @@
+* {
+
+    bg-col:             #%%color0.hex%%;
+    fg-col:             #%%foreground%%;
+
+    bg-alt-col:         #%%color13.hex%%;
+    fg-alt-col:         #%%color7.hex%%;
+    icon-base-bg:       #%%color15.hex%%;
+
+
+    selected-bg-col:    #%%color14.hex%%;
+    selected-fg-col:    #%%foreground%%;
+
+    background-color:   transparent;
+    /* text-color: @fg-col; // El texto por defecto será el del prompt o el de los elementos */
+}

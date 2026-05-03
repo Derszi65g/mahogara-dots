@@ -1,0 +1,18 @@
+* {
+    BG:    #%%color0.hex%%;
+    BGA:   #%%foreground%%;
+    FG:    #%%foreground%%;
+    FGA:   #%%color15.hex%%;
+    BDR:   #%%color6.hex%%;
+    SEL:   #%%color12.hex%%;
+    UGT:   #%%color3.hex%%;
+    IMG:   #%%color9.hex%%;
+    OFF:   #%%color10.hex%%;
+    ON:    #%%color11.hex%%;
+    background:     #%%color0.hex%%;
+    background-alt: #%%color0.hex%%;
+    foreground:     #%%foreground%%;
+    selected:       #%%color0.hex%%;
+    active:         #%%color5.hex%%;
+    urgent:         #%%color3.hex%%;
+}

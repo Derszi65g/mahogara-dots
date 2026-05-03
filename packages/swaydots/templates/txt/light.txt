@@ -1,0 +1,10 @@
+launcher = dark.rasi
+powermenu = power.rasi
+clipboard = clipdark.rasi
+dunst = dunstrc-dark
+dunstbase = dunstrcbase
+kitty = kitty.conf
+Border = border.conf
+Waybarbase = dark.css
+Waycolor = dark
+auto = fish -c "source ~/.cache/hellwal/config.fish"

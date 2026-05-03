@@ -1,0 +1,18 @@
+* {
+    BG:    #141b15;
+    BGA:   #ffffe5;
+    FG:    #ffffe5;
+    FGA:   #ffffe5;
+    BDR:   #85917f;
+    SEL:   #a29b75;
+    UGT:   #737961;
+    IMG:   #648076;
+    OFF:   #7d9978;
+    ON:    #8f9779;
+    background:     #141b15;
+    background-alt: #141b15;
+    foreground:     #ffffe5;
+    selected:       #141b15;
+    active:         #918552;
+    urgent:         #737961;
+}

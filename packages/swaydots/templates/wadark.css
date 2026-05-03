@@ -1,0 +1,12 @@
+@define-color background_rgb #%%color1.hex%%;
+@define-color background_alt_rgba #%%color1.hex%%;
+@define-color foreground #%%color15.hex%%;
+@define-color primary #%%color3.hex%%;
+@define-color red #%%color7.hex%%;
+@define-color green #%%color15.hex%%;
+@define-color yellow #%%color10.hex%%;
+
+@define-color background_rgba rgba(0, 0, 0, 0);
+
+@define-color background_alt_rgba #%%color0.hex%%;
+@define-color background_original #%%color0.hex%%;

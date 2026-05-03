@@ -1,0 +1,4 @@
+
+/* Import color-scheme from `colors` directory */
+
+@import "~/.config/scripts/general/mahoraga-dots/core/state/hellwal/sway/output/colors.rasi"

@@ -1,0 +1,17 @@
+[global]
+separator_color = frame
+
+[urgency_low]
+background = "#%%color0.hex%%"
+foreground = "#%%color15.hex%%"
+frame_color = "#%%color15.hex%%"
+
+[urgency_normal]
+background = "#%%color0.hex%%"
+foreground = "#%%foreground%%"
+frame_color = "#%%color15.hex%%"
+
+[urgency_critical]
+background = "#5e2d3a"
+foreground = "#f5c2e7"
+frame_color = "#e06c75"
