@@ -93,17 +93,34 @@ if ! grep -q "QT_QPA_PLATFORMTHEME" "$HOME/.bashrc"; then
     echo 'export QT_QPA_PLATFORMTHEME=qt6ct' >> "$HOME/.bashrc"
 fi
 
-# 6. Crear Symlinks
+# 6. Crear Symlinks (Función Robusta)
+safe_link() {
+    local src="$1"
+    local dst="$2"
+    
+    # Si el destino existe y es un enlace simbólico, lo quitamos
+    if [ -L "$dst" ]; then
+        rm "$dst"
+    # Si el destino es un directorio real, lo respaldamos
+    elif [ -d "$dst" ]; then
+        echo "Aviso: '$dst' es un directorio real. Haciendo backup a '${dst}.bak'..."
+        mv "$dst" "${dst}.bak"
+    fi
+    
+    ln -s "$src" "$dst"
+    echo "Enlazado: $dst -> $src"
+}
+
 mkdir -p ~/.config
-ln -sf "$PACKAGE_DIR/dotfiles/i3" "$HOME/.config/i3"
-ln -sf "$PACKAGE_DIR/dotfiles/polybar" "$HOME/.config/polybar"
-ln -sf "$PACKAGE_DIR/dotfiles/rofi" "$HOME/.config/rofi"
-ln -sf "$PACKAGE_DIR/dotfiles/kitty" "$HOME/.config/kitty"
-ln -sf "$PACKAGE_DIR/dotfiles/picom" "$HOME/.config/picom"
-ln -sf "$PACKAGE_DIR/dotfiles/gtk-3.0" "$HOME/.config/gtk-3.0"
-ln -sf "$PACKAGE_DIR/dotfiles/gtk-4.0" "$HOME/.config/gtk-4.0"
-ln -sf "$PACKAGE_DIR/dotfiles/qt6ct" "$HOME/.config/qt6ct"
-ln -sf "$PACKAGE_DIR/dotfiles/matugen" "$HOME/.config/matugen"
+safe_link "$PACKAGE_DIR/dotfiles/i3" "$HOME/.config/i3"
+safe_link "$PACKAGE_DIR/dotfiles/polybar" "$HOME/.config/polybar"
+safe_link "$PACKAGE_DIR/dotfiles/rofi" "$HOME/.config/rofi"
+safe_link "$PACKAGE_DIR/dotfiles/kitty" "$HOME/.config/kitty"
+safe_link "$PACKAGE_DIR/dotfiles/picom" "$HOME/.config/picom"
+safe_link "$PACKAGE_DIR/dotfiles/gtk-3.0" "$HOME/.config/gtk-3.0"
+safe_link "$PACKAGE_DIR/dotfiles/gtk-4.0" "$HOME/.config/gtk-4.0"
+safe_link "$PACKAGE_DIR/dotfiles/qt6ct" "$HOME/.config/qt6ct"
+safe_link "$PACKAGE_DIR/dotfiles/matugen" "$HOME/.config/matugen"
 
 # 7. Permisos de ejecución
 find "$PACKAGE_DIR/dotfiles/rofi/bin" -type f -name "*.sh" -o -not -name "*.*" -exec chmod +x {} +

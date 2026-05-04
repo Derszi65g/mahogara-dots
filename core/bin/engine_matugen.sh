@@ -9,9 +9,9 @@ export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
 # 1. Parseo de argumentos (Modo, Tipo, Indice, Preferencia)
 H_MODE="dark"
-H_TYPE="" 
-H_INDEX="0" # Por defecto 0 (más dominante) para evitar el prompt interactivo
-H_PREFER="" 
+H_TYPE=""
+H_INDEX="1" # Por defecto 0 (más dominante) para evitar el prompt interactivo
+H_PREFER=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
