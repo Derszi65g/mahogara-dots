@@ -1,5 +1,9 @@
 [config]
-default_type = "scheme-fruit"
+default_type = "scheme-fruit-salad"
+
+[templates.wallpaper]
+input_path = "~/.config/matugen/templates/wallpaper.txt"
+output_path = "~/.config/matugen/wallpaper.txt"
 
 [templates.polybar]
 input_path = "~/.config/matugen/templates/polybar-colors.ini"

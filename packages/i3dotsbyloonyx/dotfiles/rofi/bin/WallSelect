@@ -1,40 +1,23 @@
 #!/usr/bin/env bash
+# WallSelect - Selector de wallpaper integrado en mahogara-dots
 
-# Exportar variables y entorno
-export PATH="$HOME/.cargo/bin:$PATH"
-WALLPAPER_DIR="$HOME/wall"
+# Redirigir toda la salida a un log para diagnóstico
+exec > /tmp/dots_wallselect.log 2>&1
 
-# Obtener lista de wallpapers para Rofi
-wallpapers=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | sort)
-options=""
-while IFS= read -r file; do
-    filename=$(basename "$file")
-    options+="$filename\x00icon\x1f$file\n"
-done <<< "$wallpapers"
+echo "--- Inicio de WallSelect $(date) ---"
 
-# Ejecutar Rofi y guardar la selección
-selected_wallpaper=$(echo -e "$options" | rofi -dmenu -theme "$HOME/.config/rofi/themes/WallSelect.rasi" -theme-str 'element-icon{size: 450px;}' "")
+# 1. Ruta absoluta al ejecutable dots
+DOTS_EXEC="/home/dereck/dev/mahogara-dots/dots"
 
-# Si el usuario seleccionó algo (no presionó Esc)
-if [[ -n "$selected_wallpaper" ]]; then
-    
-    # Forma más segura y rápida de obtener la ruta completa
-    wallpaper_path="$WALLPAPER_DIR/$selected_wallpaper"
-    echo "wallpaper: $wallpaper_path" >> /tmp/wallselect.log
-    
-    # Matugen corregido: usando el PATH directamente y forzando saturacion para evitar prompt
-    matugen image "$wallpaper_path" --mode dark --prefer saturation >> /tmp/wallselect.log 2>&1
-    echo "matugen done" >> /tmp/wallselect.log
-    
-    # Aplicar fondo de pantalla
-    feh --bg-fill "$wallpaper_path" >> /tmp/wallselect.log 2>&1
-    echo "$wallpaper_path" > ~/.cache/wal/wal
-   
-    # Recargar configuraciones de terminal y barra
-    kill -SIGUSR1 $(pgrep kitty) 2>/dev/null
-    pkill polybar
-    sleep 0.5
-    bash ~/.config/polybar/launch.sh >> /tmp/wallselect.log 2>&1
-    echo "polybar done" >> /tmp/wallselect.log
+# 2. Asegurarnos de estar en el directorio correcto
+cd "/home/dereck/dev/mahogara-dots" || exit 1
 
+# 3. Ejecutar el orquestador
+if [ -x "$DOTS_EXEC" ]; then
+    echo "Ejecutando: $DOTS_EXEC i3dotsbyloonyx"
+    "$DOTS_EXEC" i3dotsbyloonyx
+    echo "Finalizado con código: $?"
+else
+    echo "ERROR: No se encontró el ejecutable en $DOTS_EXEC"
+    exit 1
 fi

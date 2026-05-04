@@ -32,13 +32,20 @@ fi
 if ! command -v matugen &> /dev/null; then
     echo "Instalando Matugen (Binario)..."
     TEMP_MATUGEN=$(mktemp -d)
-    # Detectar arquitectura y descargar último release
     URL=$(curl -s https://api.github.com/repos/InioX/matugen/releases/latest | grep "browser_download_url.*linux-x86_64.tar.gz" | cut -d '"' -f 4)
     if [[ -n "$URL" ]]; then
         wget -P "$TEMP_MATUGEN" "$URL"
         tar -xzf "$TEMP_MATUGEN"/*.tar.gz -C "$TEMP_MATUGEN"
-        sudo mv "$TEMP_MATUGEN"/matugen /usr/local/bin/
-        sudo chmod +x /usr/local/bin/matugen
+        
+        # Intentar instalar en un lugar del PATH estándar
+        if [ -w /usr/local/bin ]; then
+            mv "$TEMP_MATUGEN"/matugen /usr/local/bin/
+            chmod +x /usr/local/bin/matugen
+        else
+            mkdir -p "$HOME/.local/bin"
+            mv "$TEMP_MATUGEN"/matugen "$HOME/.local/bin/"
+            chmod +x "$HOME/.local/bin/matugen"
+        fi
     else
         echo "No se pudo encontrar binario, instalando vía Cargo (lento)..."
         cargo install matugen
@@ -46,7 +53,10 @@ if ! command -v matugen &> /dev/null; then
     rm -rf "$TEMP_MATUGEN"
 fi
 
-# Añadir ~/.local/bin y ~/.cargo/bin al PATH si no están
+# Asegurar que las rutas locales estén en el PATH para el resto del script
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+
+# Añadir a .bashrc para persistencia futura
 if ! grep -q ".local/bin" "$HOME/.bashrc"; then
     echo 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"' >> "$HOME/.bashrc"
 fi
@@ -66,8 +76,6 @@ ln -sf "$PACKAGE_DIR/dotfiles/matugen" "$HOME/.config/matugen"
 # 6. Permisos de ejecución
 find "$PACKAGE_DIR/dotfiles/rofi/bin" -type f -name "*.sh" -o -not -name "*.*" -exec chmod +x {} +
 find "$PACKAGE_DIR/dotfiles/polybar/scripts" -type f -name "*.sh" -exec chmod +x {} +
-chmod +x "$PACKAGE_DIR/dotfiles/i3/set-wallpaper.sh"
-chmod +x "$PACKAGE_DIR/dotfiles/i3/mini-matugen-j"
 
 # 7. Copiar Wallpaper inicial si no existe
 [ ! -d "$HOME/wall" ] && cp -r "$PACKAGE_DIR/dotfiles/wall" "$HOME/wall"

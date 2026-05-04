@@ -122,16 +122,21 @@ fi
 
 # 6. Ejecutar Secuencia Seleccionada
 for action in "${FINAL_SEQUENCE[@]}"; do
-    script_name="${action%.sh}"
-    specific="${TARGETED_ARGS["$script_name"]}"
+    # Separar el nombre del script de sus argumentos internos
+    read -r -a action_parts <<< "$action"
+    script_name="${action_parts[0]}"
+    internal_args=("${action_parts[@]:1}")
     
-    if [ -x "$PACKAGE_DIR/bin/$action" ]; then
-        "$PACKAGE_DIR/bin/$action" "${GENERAL_ARGS[@]}" $specific
-    elif [ -x "$BIN_DIR/$action" ]; then
-        "$BIN_DIR/$action" "${GENERAL_ARGS[@]}" $specific
-    elif command -v "$action" >/dev/null; then
-        "$action" "${GENERAL_ARGS[@]}" $specific
+    clean_name="${script_name%.sh}"
+    specific="${TARGETED_ARGS["$clean_name"]}"
+    
+    if [ -x "$PACKAGE_DIR/bin/$script_name" ]; then
+        "$PACKAGE_DIR/bin/$script_name" "${GENERAL_ARGS[@]}" "${internal_args[@]}" $specific
+    elif [ -x "$BIN_DIR/$script_name" ]; then
+        "$BIN_DIR/$script_name" "${GENERAL_ARGS[@]}" "${internal_args[@]}" $specific
+    elif command -v "$script_name" >/dev/null; then
+        "$script_name" "${GENERAL_ARGS[@]}" "${internal_args[@]}" $specific
     else
-        echo "Error: Accion '$action' no encontrada." >&2
+        echo "Error: Accion '$script_name' no encontrada." >&2
     fi
 done

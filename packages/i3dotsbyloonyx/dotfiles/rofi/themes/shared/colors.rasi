@@ -1,15 +1,15 @@
 * {
-    background:     #1a1110FF;
-    background-alt: #534341FF;
-    foreground:     #f1dedcFF;
-    selected:       #ffb4abFF;
-    active:         #e7bdb8FF;
+    background:     #0c1515FF;
+    background-alt: #394a49FF;
+    foreground:     #dae5e3FF;
+    selected:       #ffb77aFF;
+    active:         #a5cddeFF;
     urgent:         #ffb4abFF;
-    BG:             #1a1110FF;
-    BGA:            #534341FF;
-    FG:             #f1dedcFF;
-    SEL:            #ffb4abFF;
-    BDR:            #a08c8aFF;
-    ON:             #e7bdb8FF;
+    BG:             #0c1515FF;
+    BGA:            #394a49FF;
+    FG:             #dae5e3FF;
+    SEL:            #ffb77aFF;
+    BDR:            #829493FF;
+    ON:             #a5cddeFF;
     OFF:            #ffb4abFF;
 }
