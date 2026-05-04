@@ -134,4 +134,14 @@ if command -v matugen &> /dev/null; then
     matugen image "$HOME/wall/wall.png"
 fi
 
+# 10. Aplicar Tema GTK (gsettings)
+if command -v gsettings &> /dev/null; then
+    echo "Aplicando Tema GTK via gsettings..."
+    gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
+    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+    # Opcionales si el usuario tiene los iconos/cursores (basado en settings.ini)
+    gsettings set org.gnome.desktop.interface icon-theme "Inverse-pink-dark" 2>/dev/null || true
+    gsettings set org.gnome.desktop.interface cursor-theme "Layan-border-cursors" 2>/dev/null || true
+fi
+
 echo "Instalación completada para $VARIANT_NAME."
