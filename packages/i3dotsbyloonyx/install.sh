@@ -74,6 +74,9 @@ fi
 export PROJECT_ROOT="$(cd "$PACKAGE_DIR/../.." && pwd)"
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PROJECT_ROOT:$PATH"
 
+# Configurar variables de i3 con rutas absolutas
+echo "set \$dots_cmd $PROJECT_ROOT/dots" > "$PACKAGE_DIR/dotfiles/i3/conf.d/vars.generated"
+
 # Añadir a .bashrc para persistencia futura
 if ! grep -q ".local/bin" "$HOME/.bashrc"; then
     echo 'export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"' >> "$HOME/.bashrc"
