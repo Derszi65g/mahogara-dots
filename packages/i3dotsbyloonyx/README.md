@@ -53,6 +53,35 @@ cd i3dotsbyloonyx
 ./installvoid.sh
 ```
 
+# Gestión de Barras (Polybar)
+
+Este paquete incluye un motor dinámico para gestionar múltiples estilos y temas de Polybar sin editar archivos manualmente.
+
+### Comandos Principales
+Puedes gestionar la barra usando el orquestador `dots`:
+- **Menú Interactivo**: `./dots bar` (abre un selector para estilo, posición, temas y transparencia).
+- **Cambiar Tema**: `./dots bar -b <nombre_del_tema>`
+- **Cambiar Estilo de Bordes**: `./dots bar -s <round|square>`
+- **Cambiar Posición**: `./dots bar -p <top|bottom>`
+- **Alternar Transparencia**: `./dots bar -t <true|false>`
+
+### Temas Disponibles
+1.  **principal**: La barra base con soporte para modos `round` y `square`.
+2.  **polybar_compact**: Versión flotante con módulos pegados (estilo bloque).
+3.  **polybar_floating**: Versión flotante con separaciones finas entre módulos.
+4.  **polybar_underline**: Estilo con barras de colores inferiores.
+
+### Personalización en `config.env`
+Puedes definir tus preferencias por defecto editando `packages/i3dotsbyloonyx/config.env`:
+```bash
+export BAR_STYLE="square"       # round o square
+export BAR_POSITION="bottom"    # top o bottom
+export BAR_TRANSPARENCY="true"  # true o false
+```
+
+### Integración con Matugen
+Todos los temas están sincronizados con **Matugen**. Al cambiar el wallpaper o desactivar la transparencia, la barra usará automáticamente los colores generados (`background-solid`, `primary`, `secondary`, etc.) para mantener la armonía visual.
+
 # Teclas/Atajos
 
 | Keys | Action |

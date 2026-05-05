@@ -101,7 +101,11 @@ source "$ENV_CONFIG"
 
 # 5. Determinar Secuencia a Ejecutar
 if [ -n "$ACTION_NAME" ]; then
-    var_action="DOT_SEQUENCE_${ACTION_NAME^^}"
+    # Sanitizar el nombre de la acción para la variable (quitar .sh y puntos)
+    clean_action="${ACTION_NAME%.sh}"
+    var_action="DOT_SEQUENCE_${clean_action^^}"
+    var_action="${var_action//./_}"
+    
     declare -n SELECTED_SEQUENCE="$var_action"
     
     if [[ -n "${SELECTED_SEQUENCE[*]}" ]]; then
@@ -130,10 +134,15 @@ for action in "${FINAL_SEQUENCE[@]}"; do
     clean_name="${script_name%.sh}"
     specific="${TARGETED_ARGS["$clean_name"]}"
     
+    # Intentar ejecutar (con y sin .sh)
     if [ -x "$PACKAGE_DIR/bin/$script_name" ]; then
         "$PACKAGE_DIR/bin/$script_name" "${GENERAL_ARGS[@]}" "${internal_args[@]}" $specific
+    elif [ -x "$PACKAGE_DIR/bin/${script_name}.sh" ]; then
+        "$PACKAGE_DIR/bin/${script_name}.sh" "${GENERAL_ARGS[@]}" "${internal_args[@]}" $specific
     elif [ -x "$BIN_DIR/$script_name" ]; then
         "$BIN_DIR/$script_name" "${GENERAL_ARGS[@]}" "${internal_args[@]}" $specific
+    elif [ -x "$BIN_DIR/${script_name}.sh" ]; then
+        "$BIN_DIR/${script_name}.sh" "${GENERAL_ARGS[@]}" "${internal_args[@]}" $specific
     elif command -v "$script_name" >/dev/null; then
         "$script_name" "${GENERAL_ARGS[@]}" "${internal_args[@]}" $specific
     else

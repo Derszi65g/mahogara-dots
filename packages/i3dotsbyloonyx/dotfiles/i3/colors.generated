@@ -1,7 +1,7 @@
-set $bg #15121a
-set $accent #84d7af
-set $text #e7e0eb
-set $secondary #e1bbdc
+set $bg #151310
+set $accent #e9cea7
+set $text #e8e1dc
+set $secondary #d3c4b2
 
 client.focused $accent $accent $bg #FFFFFF $accent
 client.focused_inactive $bg $bg #FFFFFF $secondary $bg
