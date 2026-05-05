@@ -21,7 +21,7 @@ SYS_INTERFACE=$(ip link | awk '/state UP/ {print $2}' | tr -d ':' | head -n 1 ||
 SYS_BACKLIGHT=$(ls -1 /sys/class/backlight/ | head -n 1 || echo "intel_backlight")
 
 # Actualizar hardware.ini con el hardware detectado
-HARDWARE_INI="$PACKAGE_DIR/dotfiles/polybar/hardware.ini"
+HARDWARE_INI="$PACKAGE_DIR/dotfiles/polybar_base/hardware.ini"
 if [ -f "$HARDWARE_INI" ]; then
     sed -i "s/sys_battery = .*/sys_battery = $SYS_BAT/" "$HARDWARE_INI"
     sed -i "s/sys_adapter = .*/sys_adapter = $SYS_ADAPTER/" "$HARDWARE_INI"
@@ -129,7 +129,11 @@ safe_link() {
 
 mkdir -p ~/.config
 safe_link "$PACKAGE_DIR/dotfiles/i3" "$HOME/.config/i3"
-safe_link "$PACKAGE_DIR/dotfiles/polybar" "$HOME/.config/polybar"
+# Inicialización de Polybar (Base + Antigua por defecto)
+mkdir -p "$HOME/.config/polybar"
+cp -rf "$PACKAGE_DIR/dotfiles/polybar_base/." "$HOME/.config/polybar/"
+cp -rf "$PACKAGE_DIR/dotfiles/polybar_configs/polybar_antigua/." "$HOME/.config/polybar/"
+
 safe_link "$PACKAGE_DIR/dotfiles/rofi" "$HOME/.config/rofi"
 safe_link "$PACKAGE_DIR/dotfiles/kitty" "$HOME/.config/kitty"
 safe_link "$PACKAGE_DIR/dotfiles/picom" "$HOME/.config/picom"
@@ -140,7 +144,8 @@ safe_link "$PACKAGE_DIR/dotfiles/matugen" "$HOME/.config/matugen"
 
 # 7. Permisos de ejecución
 find "$PACKAGE_DIR/dotfiles/rofi/bin" -type f -name "*.sh" -o -not -name "*.*" -exec chmod +x {} +
-find "$PACKAGE_DIR/dotfiles/polybar/scripts" -type f -name "*.sh" -exec chmod +x {} +
+find "$PACKAGE_DIR/dotfiles/polybar_base/scripts" -type f -name "*.sh" -exec chmod +x {} +
+find "$PACKAGE_DIR/dotfiles/polybar_configs" -type f -name "*.sh" -exec chmod +x {} +
 
 # 8. Copiar Wallpaper inicial si no existe
 [ ! -d "$HOME/wall" ] && cp -r "$PACKAGE_DIR/dotfiles/wall" "$HOME/wall"

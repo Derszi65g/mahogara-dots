@@ -15,7 +15,7 @@ HEIGHT=$(cat "$STATE_DIR/$CURRENT_ENV/bar/height" 2>/dev/null || echo "$BAR_HEIG
 HEIGHT=$(echo "$HEIGHT" | tr -d '[:space:]')
 [[ -z "$HEIGHT" ]] && HEIGHT="15pt"
 
-TYPE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/type" 2>/dev/null || echo "principal")
+TYPE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/type" 2>/dev/null || echo "polybar_antigua")
 TYPE=$(echo "$TYPE" | tr -d '[:space:]')
 
 MODE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/mode" 2>/dev/null || echo "solid")
@@ -31,13 +31,10 @@ mkdir -p "$HOME/.config/polybar"
 # Limpiar contenido anterior para evitar mezcla de archivos de distintos temas
 rm -rf "$HOME/.config/polybar"/*
 
-# Siempre copiar system.ini y hardware.ini (contiene la detección de hardware)
-cp -f "$PACKAGE_DIR/dotfiles/polybar/system.ini" "$HOME/.config/polybar/"
-cp -f "$PACKAGE_DIR/dotfiles/polybar/hardware.ini" "$HOME/.config/polybar/"
+# Siempre copiar la base (hardware.ini y scripts)
+cp -rf "$PACKAGE_DIR/dotfiles/polybar_base/." "$HOME/.config/polybar/"
 
-if [ "$TYPE" == "principal" ]; then
-    cp -rf "$PACKAGE_DIR/dotfiles/polybar/." "$HOME/.config/polybar/"
-elif [ -d "$PACKAGE_DIR/dotfiles/polybar_configs/$TYPE" ]; then
+if [ -d "$PACKAGE_DIR/dotfiles/polybar_configs/$TYPE" ]; then
     cp -rf "$PACKAGE_DIR/dotfiles/polybar_configs/$TYPE/." "$HOME/.config/polybar/"
 fi
 
@@ -94,17 +91,22 @@ POLY_SYSTEM="$HOME/.config/polybar/system.ini"
 
 if [ -f "$POLY_CONFIG" ]; then
     target_config="$(readlink -f "$POLY_CONFIG")"
-    sed -i "s/^radius = .*/radius = $RADIUS/" "$target_config"
+    
+    # Solo aplicar radio y fuentes dinámicas si NO es la barra antigua
+    if [ "$TYPE" != "polybar_antigua" ]; then
+        sed -i "s/^radius = .*/radius = $RADIUS/" "$target_config"
+        
+        # Aplicar escalado de fuentes dinámico
+        sed -i "s/^font-0 = .*/font-0 = \"JetBrainsMono Nerd Font Mono:style=Bold:size=$F_TEXT;$F_OFFSET\"/" "$target_config"
+        sed -i "s/^font-1 = .*/font-1 = \"JetBrainsMono Nerd Font Mono:size=$F_ICON;$F_OFFSET\"/" "$target_config"
+        sed -i "s/^font-2 = .*/font-2 = \"JetBrainsMono Nerd Font Mono:size=$F_TEXT:antialias=false;$F_OFFSET\"/" "$target_config"
+    fi
+
     sed -i "s/^bottom = .*/bottom = $IS_BOTTOM/" "$target_config"
     sed -i "s/^height = .*/height = $HEIGHT/" "$target_config"
     
-    # Aplicar escalado de fuentes dinámico
-    sed -i "s/^font-0 = .*/font-0 = \"JetBrainsMono Nerd Font Mono:style=Bold:size=$F_TEXT;$F_OFFSET\"/" "$target_config"
-    sed -i "s/^font-1 = .*/font-1 = \"JetBrainsMono Nerd Font Mono:size=$F_ICON;$F_OFFSET\"/" "$target_config"
-    sed -i "s/^font-2 = .*/font-2 = \"JetBrainsMono Nerd Font Mono:size=$F_TEXT:antialias=false;$F_OFFSET\"/" "$target_config"
-    
-    # Solo forzamos margin/padding en el tema principal para mantener su look de bloques
-    if [ "$TYPE" == "principal" ]; then
+    # Solo forzamos margin/padding en el tema principal original (ahora polybar_principal)
+    if [ "$TYPE" == "polybar_principal" ]; then
         sed -i "s/^module-margin = .*/module-margin = 0/" "$target_config"
         sed -i "s/^padding-left = .*/padding-left = 0/" "$target_config"
         sed -i "s/^padding-right = .*/padding-right = 0/" "$target_config"
@@ -134,14 +136,14 @@ fi
 POLY_MODULES="$HOME/.config/polybar/modules.ini"
 
 if [ -f "$POLY_SYSTEM" ] || [ -f "$POLY_MODULES" ]; then
-    # Determinar qué archivo usar (system.ini para principal, modules.ini para variantes)
-    if [ "$TYPE" == "principal" ]; then
+    # Determinar qué archivo usar (system.ini para principal/antigua, modules.ini para variantes)
+    if [ "$TYPE" == "polybar_principal" ] || [ "$TYPE" == "polybar_antigua" ]; then
         TARGET_FILE="$(readlink -f "$POLY_SYSTEM")"
     else
         TARGET_FILE="$(readlink -f "$POLY_MODULES")"
     fi
     
-    if [ -f "$TARGET_FILE" ]; then
+    if [ -f "$TARGET_FILE" ] && [ "$TYPE" != "polybar_antigua" ]; then
         if [ "$STYLE" == "square" ]; then
             PAD=1
             W_PAD=1
@@ -170,7 +172,7 @@ if [ -f "$POLY_SYSTEM" ] || [ -f "$POLY_MODULES" ]; then
 fi
 
 # 7. Ajustar i3-workspaces en config.ini
-if [ -f "$POLY_CONFIG" ]; then
+if [ -f "$POLY_CONFIG" ] && [ "$TYPE" != "polybar_antigua" ]; then
     target_config="$(readlink -f "$POLY_CONFIG")"
     sed -i "s/label-focused-padding = .*/label-focused-padding = $W_PAD/g" "$target_config"
     sed -i "s/label-visible-padding = .*/label-visible-padding = $W_PAD/g" "$target_config"

@@ -88,7 +88,7 @@ if [ "$DO_NEXT" -eq 1 ] || [ "$DO_PREV" -eq 1 ] || [ "$DO_SELECT" -eq 1 ]; then
     else
         # Lógica de Ciclo (Next/Prev)
         CURRENT_INDEX=-1
-        CUR_TYPE=$(cat "$TYPE_STATE_FILE" 2>/dev/null | tr -d '[:space:]' || echo "principal")
+        CUR_TYPE=$(cat "$TYPE_STATE_FILE" 2>/dev/null | tr -d '[:space:]' || echo "polybar_antigua")
         CUR_MODE=$(cat "$MODE_STATE_FILE" 2>/dev/null | tr -d '[:space:]' || echo "solid")
 
         for i in "${!PRESET_ARRAY[@]}"; do
@@ -137,7 +137,7 @@ if [ "$LIST_ALL" -eq 1 ]; then
     echo "Altura: (ej: 15pt, 20px)"
     echo "Modos: solid, underline"
     echo "Temas de Barra:"
-    echo "  - principal"
+    echo "  - polybar_antigua"
     if [ -d "$PACKAGE_DIR/dotfiles/polybar_configs" ]; then
         ls -1 "$PACKAGE_DIR/dotfiles/polybar_configs" | sed 's/^/  - /'
     fi
@@ -156,7 +156,7 @@ if [ -z "$SEL_STYLE" ] && [ -z "$SEL_TYPE" ] && [ -z "$SEL_POS" ] && [ -z "$SEL_
     fi
     
     # Generar opciones dinámicas
-    options="Style: round\nStyle: square\nPos: top\nPos: bottom\nTrans: true\nTrans: false\nMode: solid\nMode: underline\nHeight: custom\nTheme: principal"
+    options="Style: round\nStyle: square\nPos: top\nPos: bottom\nTrans: true\nTrans: false\nMode: solid\nMode: underline\nHeight: custom"
     if [ -d "$PACKAGE_DIR/dotfiles/polybar_configs" ]; then
         for theme in $(ls -1 "$PACKAGE_DIR/dotfiles/polybar_configs"); do
             options+="\nTheme: $theme"
