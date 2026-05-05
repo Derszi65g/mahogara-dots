@@ -1,9 +1,4 @@
 #!/bin/sh
-kill_polybar() {
-  pkill -USR1 polybar
-  sleep 1
-  pkill polybar
-}
 
 # Matar instancias existentes de forma robusta
 pkill polybar
@@ -36,3 +31,4 @@ export POLY_RIGHT="$POLY_RIGHT space left tray right space"
 
 # 3. Iniciar las nuevas instancias de forma silenciosa
 polybar -q bottom &
+sleep 0.1

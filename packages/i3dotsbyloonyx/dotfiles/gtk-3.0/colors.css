@@ -4,34 +4,34 @@
 */
 
 /* Libadwaita / GTK4 names */
-@define-color accent_color #9dccf2;
-@define-color accent_fg_color #00344e;
-@define-color accent_bg_color #9dccf2;
-@define-color window_bg_color #111416;
-@define-color window_fg_color #e2e2e5;
-@define-color headerbar_bg_color #111416;
-@define-color headerbar_fg_color #e2e2e5;
-@define-color popover_bg_color #111416;
-@define-color popover_fg_color #e2e2e5;
-@define-color view_bg_color #111416;
-@define-color view_fg_color #e2e2e5;
-@define-color card_bg_color #111416;
-@define-color card_fg_color #e2e2e5;
+@define-color accent_color #ffb3b0;
+@define-color accent_fg_color #660611;
+@define-color accent_bg_color #ffb3b0;
+@define-color window_bg_color #1b1110;
+@define-color window_fg_color #f3dedc;
+@define-color headerbar_bg_color #1b1110;
+@define-color headerbar_fg_color #f3dedc;
+@define-color popover_bg_color #1b1110;
+@define-color popover_fg_color #f3dedc;
+@define-color view_bg_color #1b1110;
+@define-color view_fg_color #f3dedc;
+@define-color card_bg_color #1b1110;
+@define-color card_fg_color #f3dedc;
 @define-color sidebar_bg_color @window_bg_color;
 @define-color sidebar_fg_color @window_fg_color;
 @define-color sidebar_border_color @window_bg_color;
 @define-color sidebar_backdrop_color @window_bg_color;
 
 /* GTK3 legacy names for better compatibility with adw-gtk3 */
-@define-color theme_fg_color #e2e2e5;
-@define-color theme_bg_color #111416;
-@define-color theme_view_fg_color #e2e2e5;
-@define-color theme_view_bg_color #111416;
-@define-color theme_selected_bg_color #9dccf2;
-@define-color theme_selected_fg_color #00344e;
-@define-color theme_unfocused_selected_bg_color #9dccf2;
-@define-color theme_unfocused_selected_fg_color #00344e;
-@define-color warning_color #f4bc7a;
+@define-color theme_fg_color #f3dedc;
+@define-color theme_bg_color #1b1110;
+@define-color theme_view_fg_color #f3dedc;
+@define-color theme_view_bg_color #1b1110;
+@define-color theme_selected_bg_color #ffb3b0;
+@define-color theme_selected_fg_color #660611;
+@define-color theme_unfocused_selected_bg_color #ffb3b0;
+@define-color theme_unfocused_selected_fg_color #660611;
+@define-color warning_color #78d8b5;
 @define-color error_color #ffb4ab;
-@define-color success_color #9dccf2;
+@define-color success_color #ffb3b0;
 
