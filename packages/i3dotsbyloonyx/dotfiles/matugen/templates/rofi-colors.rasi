@@ -13,3 +13,16 @@
     ON:             {{colors.secondary.default.hex}}FF;
     OFF:            {{colors.error.default.hex}}FF;
 }
+
+element selected.normal {
+    background-color: var(selected);
+    text-color:       var(background);
+}
+
+element-text selected {
+    text-color:       var(background);
+}
+
+element-icon selected {
+    text-color:       var(background);
+}
