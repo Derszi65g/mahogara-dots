@@ -31,6 +31,10 @@ mkdir -p "$HOME/.config/polybar"
 # Limpiar contenido anterior para evitar mezcla de archivos de distintos temas
 rm -rf "$HOME/.config/polybar"/*
 
+# Siempre copiar system.ini y hardware.ini (contiene la detección de hardware)
+cp -f "$PACKAGE_DIR/dotfiles/polybar/system.ini" "$HOME/.config/polybar/"
+cp -f "$PACKAGE_DIR/dotfiles/polybar/hardware.ini" "$HOME/.config/polybar/"
+
 if [ "$TYPE" == "principal" ]; then
     cp -rf "$PACKAGE_DIR/dotfiles/polybar/." "$HOME/.config/polybar/"
 elif [ -d "$PACKAGE_DIR/dotfiles/polybar_configs/$TYPE" ]; then

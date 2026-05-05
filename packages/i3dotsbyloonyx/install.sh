@@ -13,6 +13,22 @@ source "$PACKAGE_DIR/envs/${VARIANT_NAME}.env"
 
 echo "Instalando i3dotsbyloonyx (Variante: $VARIANT_NAME)..."
 
+# 0. Detección de Hardware (Batería, Adaptador, Red, Backlight)
+echo "Detectando hardware..."
+SYS_BAT=$(ls -1 /sys/class/power_supply/ | grep -E '^BAT' | head -n 1 || echo "BAT0")
+SYS_ADAPTER=$(ls -1 /sys/class/power_supply/ | grep -E '^AC|^AD' | head -n 1 || echo "ACAD")
+SYS_INTERFACE=$(ip link | awk '/state UP/ {print $2}' | tr -d ':' | head -n 1 || echo "wlan0")
+SYS_BACKLIGHT=$(ls -1 /sys/class/backlight/ | head -n 1 || echo "intel_backlight")
+
+# Actualizar hardware.ini con el hardware detectado
+HARDWARE_INI="$PACKAGE_DIR/dotfiles/polybar/hardware.ini"
+if [ -f "$HARDWARE_INI" ]; then
+    sed -i "s/sys_battery = .*/sys_battery = $SYS_BAT/" "$HARDWARE_INI"
+    sed -i "s/sys_adapter = .*/sys_adapter = $SYS_ADAPTER/" "$HARDWARE_INI"
+    sed -i "s/sys_network_interface = .*/sys_network_interface = $SYS_INTERFACE/" "$HARDWARE_INI"
+    sed -i "s/sys_graphics_card = .*/sys_graphics_card = $SYS_BACKLIGHT/" "$HARDWARE_INI"
+fi
+
 # 2. Instalar dependencias
 if [ -n "$PKG_LIST" ]; then
     eval "$PKG_MANAGER $PKG_INSTALL_CMD $PKG_LIST"
