@@ -51,7 +51,7 @@ if [ -f "$STATE_DIR/$CURRENT_ENV/bar/transparency" ]; then
     fi
 fi
 
-# 3. Lógica de Radio y Posición
+# 3. Lógica de Radio, Posición y Escalado de Fuente
 if [ "$STYLE" == "round" ]; then
     RADIUS=10
 else
@@ -64,6 +64,25 @@ else
     IS_BOTTOM="true"
 fi
 
+# Cálculo dinámico de fuentes basado en la altura (HEIGHT)
+# Extraer solo el número de la altura (ej: 15pt -> 15)
+H_NUM=$(echo "$HEIGHT" | grep -oE '[0-9]+' | head -n 1)
+[[ -z "$H_NUM" ]] && H_NUM=15
+
+if [ "$H_NUM" -le 15 ]; then
+    F_TEXT=9
+    F_ICON=12
+    F_OFFSET=3
+elif [ "$H_NUM" -le 18 ]; then
+    F_TEXT=10
+    F_ICON=14
+    F_OFFSET=4
+else
+    F_TEXT=11
+    F_ICON=16
+    F_OFFSET=4
+fi
+
 # 4. Aplicar a config.ini (Preservando symlinks internos si los hay)
 POLY_CONFIG="$HOME/.config/polybar/config.ini"
 POLY_COLORS="$HOME/.config/polybar/colors.ini"
@@ -74,6 +93,11 @@ if [ -f "$POLY_CONFIG" ]; then
     sed -i "s/^radius = .*/radius = $RADIUS/" "$target_config"
     sed -i "s/^bottom = .*/bottom = $IS_BOTTOM/" "$target_config"
     sed -i "s/^height = .*/height = $HEIGHT/" "$target_config"
+    
+    # Aplicar escalado de fuentes dinámico
+    sed -i "s/^font-0 = .*/font-0 = \"JetBrainsMono Nerd Font Mono:style=Bold:size=$F_TEXT;$F_OFFSET\"/" "$target_config"
+    sed -i "s/^font-1 = .*/font-1 = \"JetBrainsMono Nerd Font Mono:size=$F_ICON;$F_OFFSET\"/" "$target_config"
+    sed -i "s/^font-2 = .*/font-2 = \"JetBrainsMono Nerd Font Mono:size=$F_TEXT:antialias=false;$F_OFFSET\"/" "$target_config"
     
     # Solo forzamos margin/padding en el tema principal para mantener su look de bloques
     if [ "$TYPE" == "principal" ]; then
