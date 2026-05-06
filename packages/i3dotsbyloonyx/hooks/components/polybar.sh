@@ -54,12 +54,14 @@ H_NUM=$(echo "$HEIGHT" | grep -oE '[0-9]+' | head -n 1)
 if [ "$H_NUM" -le 13 ]; then
     F_TEXT=8; F_ICON=14; F_ROFI=16; F_OFFSET=2; R_OFFSET=2; F_EXTRA=12
 elif [ "$H_NUM" -le 15 ]; then
-    F_TEXT=9; F_ICON=16; F_ROFI=18; F_OFFSET=3; R_OFFSET=2; F_EXTRA=14
+    F_TEXT=10; F_ICON=16; F_ROFI=18; F_OFFSET=3; R_OFFSET=2; F_EXTRA=14
 elif [ "$H_NUM" -le 18 ]; then
     F_TEXT=10; F_ICON=18; F_ROFI=20; F_OFFSET=4; R_OFFSET=3; F_EXTRA=16
 else
-    F_TEXT=12; F_ICON=22; F_ROFI=24; F_OFFSET=5; R_OFFSET=3; F_EXTRA=18
+    F_TEXT=12; F_ICON=20; F_ROFI=24; F_OFFSET=5; R_OFFSET=3; F_EXTRA=18
 fi
+
+F_SYM=$((F_ICON - 3))
 
 if [ "$TRANS" == "false" ]; then
     BG_COLOR="\${colors.background-solid}"
@@ -103,6 +105,9 @@ font-1 = "JetBrainsMono Nerd Font Mono:size=$F_ICON;$F_OFFSET"
 font-2 = "JetBrainsMono Nerd Font Mono:size=$F_TEXT:antialias=false;$F_OFFSET"
 font-rofi = "JetBrainsMono Nerd Font Mono:size=$F_ROFI;$R_OFFSET"
 font-extra = "JetBrainsMono Nerd Font Mono:size=$F_EXTRA;$F_OFFSET"
+font-firacode = "FiraCode Nerd Font:size=$F_ICON;$F_OFFSET"
+font-symbols = "Symbols Nerd Font Mono:size=$F_SYM;$F_OFFSET"
+font-large = "JetBrainsMono Nerd Font Mono:size=$((F_ICON + 4));$((F_OFFSET + 3))"
 module-padding = 1
 label-padding = 1
 focused-bg = $MOD_FOC_BG

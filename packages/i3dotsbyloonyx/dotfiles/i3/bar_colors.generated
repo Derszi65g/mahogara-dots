@@ -1,9 +1,9 @@
 colors {
-    background #151310
+    background #131316
     statusline #FFFFFF
-    separator #d3c4b2
-    focused_workspace #e9cea7 #e9cea7 #151310
-    active_workspace #d3c4b2 #d3c4b2 #e8e1dc
-    inactive_workspace #151310 #151310 #e8e1dc
-    binding_mode #e9cea7 #e9cea7 #151310
+    separator #c6c4dc
+    focused_workspace #c3c2f7 #c3c2f7 #131316
+    active_workspace #c6c4dc #c6c4dc #e5e1e6
+    inactive_workspace #131316 #131316 #e5e1e6
+    binding_mode #c3c2f7 #c3c2f7 #131316
 }
