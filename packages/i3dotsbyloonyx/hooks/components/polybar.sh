@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# hooks/components/polybar.sh - Versión Ultra-Optimizada (RAM + Symlinks)
+# hooks/components/polybar.sh - Versión Ultra-Optimizada (RAM + Symlinks + Icons)
 
 # 1. Leer Estado
 STYLE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/style" 2>/dev/null || echo "square")
@@ -34,20 +34,31 @@ THEME_SRC="$PACKAGE_DIR/dotfiles/polybar_configs/$TYPE"
 if [ -d "$THEME_SRC" ]; then
     ln -sfT "$THEME_SRC" "$CONF_DIR/current_theme"
     ln -sf "$CONF_DIR/current_theme/launch.sh" "$CONF_DIR/launch.sh"
+    
+    # Manejo dinámico de módulos para polybar_underline
+    if [ "$TYPE" == "polybar_underline" ]; then
+        MOD_FILE="modules_${MODE}.ini"
+        [ ! -f "$THEME_SRC/$MOD_FILE" ] && MOD_FILE="modules_underline.ini"
+        ln -sf "$THEME_SRC/$MOD_FILE" "$CONF_DIR/current_theme/modules.ini"
+    fi
 fi
 
 # 3. Preparar Variables para RAM (/dev/shm)
 [ "$STYLE" == "round" ] && RADIUS=10 || RADIUS=0
 [ "$POS" == "top" ] && IS_BOTTOM="false" || IS_BOTTOM="true"
 
+# Fuentes (Matriz de escalado con soporte para Rofi y centrado vertical)
 H_NUM=$(echo "$HEIGHT" | grep -oE '[0-9]+' | head -n 1)
 [[ -z "$H_NUM" ]] && H_NUM=15
-if [ "$H_NUM" -le 15 ]; then
-    F_TEXT=9; F_ICON=12; F_OFFSET=3
+
+if [ "$H_NUM" -le 13 ]; then
+    F_TEXT=8; F_ICON=14; F_ROFI=16; F_OFFSET=2; R_OFFSET=2; F_EXTRA=12
+elif [ "$H_NUM" -le 15 ]; then
+    F_TEXT=9; F_ICON=16; F_ROFI=18; F_OFFSET=3; R_OFFSET=2; F_EXTRA=14
 elif [ "$H_NUM" -le 18 ]; then
-    F_TEXT=10; F_ICON=14; F_OFFSET=4
+    F_TEXT=10; F_ICON=18; F_ROFI=20; F_OFFSET=4; R_OFFSET=3; F_EXTRA=16
 else
-    F_TEXT=11; F_ICON=16; F_OFFSET=4
+    F_TEXT=12; F_ICON=22; F_ROFI=24; F_OFFSET=5; R_OFFSET=3; F_EXTRA=18
 fi
 
 if [ "$TRANS" == "false" ]; then
@@ -76,7 +87,7 @@ else
     MOD_ROFI_FG="\${colors.background-solid}"
 fi
 
-LAUNCH_ICON="${OS_ICON:-󱘊}"
+LAUNCH_ICON="${OS_ICON:-󰣆}"
 
 # 4. Escribir en RAM
 RAM_CONFIG="/dev/shm/user_configs.ini"
@@ -90,6 +101,8 @@ background = $BG_COLOR
 font-0 = "JetBrainsMono Nerd Font Mono:style=Bold:size=$F_TEXT;$F_OFFSET"
 font-1 = "JetBrainsMono Nerd Font Mono:size=$F_ICON;$F_OFFSET"
 font-2 = "JetBrainsMono Nerd Font Mono:size=$F_TEXT:antialias=false;$F_OFFSET"
+font-rofi = "JetBrainsMono Nerd Font Mono:size=$F_ROFI;$R_OFFSET"
+font-extra = "JetBrainsMono Nerd Font Mono:size=$F_EXTRA;$F_OFFSET"
 module-padding = 1
 label-padding = 1
 focused-bg = $MOD_FOC_BG
@@ -99,7 +112,17 @@ prefix-bg = $MOD_PRE_BG
 prefix-fg = $MOD_PRE_FG
 rofi-bg = $MOD_ROFI_BG
 rofi-fg = $MOD_ROFI_FG
-launcher-icon = "$LAUNCH_ICON"
+launcher-icon = $LAUNCH_ICON
+
+; Icon Library
+icon-cpu = 
+icon-ram = 󰍛
+icon-temp = 
+icon-date = 󰃭
+icon-disk = 󰋊
+icon-vol = 󰕾
+icon-light = 󰃠
+icon-bat = 󱊣
 EOF
 
 # 5. Configuración de entrada única para Polybar
