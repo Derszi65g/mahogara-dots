@@ -21,10 +21,10 @@ La detección automática (sin comando explícito) se mantiene por compatibilida
 **Ejemplo de uso:**
 ```bash
 # Forzar instalación de variante 'void' aunque existiera una acción 'void'
-./dots install i3dotsbyloonyx void
+./dots install i3dots void
 
 # Ejecutar una acción sin pasar por install.sh
-./dots run i3dotsbyloonyx launcher
+./dots run i3dots launcher
 ```
 
 

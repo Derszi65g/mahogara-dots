@@ -26,7 +26,7 @@ Orquestador modular diseñado para la portabilidad absoluta. Gestiona entornos (
 ```bash
 ./dots install <paquete> [variante] [argumentos]
 # Ejemplo: Instalar con variante debian
-./dots install i3dotsbyloonyx debian
+./dots install i3dots debian
 
 ./dots apply <paquete> [variante] [argumentos]
 # Ejemplo: Aplicar configuración actual (alias de install)

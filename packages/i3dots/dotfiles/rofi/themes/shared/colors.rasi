@@ -1,0 +1,28 @@
+* {
+    background:     #1b1110FF;
+    background-alt: #574140FF;
+    foreground:     #f3dedcFF;
+    selected:       #ffb3b0FF;
+    active:         #feb4b0FF;
+    urgent:         #ffb4abFF;
+    BG:             #1b1110FF;
+    BGA:            #574140FF;
+    FG:             #f3dedcFF;
+    SEL:            #ffb3b0FF;
+    BDR:            #a58a89FF;
+    ON:             #feb4b0FF;
+    OFF:            #ffb4abFF;
+}
+
+element selected.normal {
+    background-color: var(selected);
+    text-color:       var(background);
+}
+
+element-text selected {
+    text-color:       var(background);
+}
+
+element-icon selected {
+    text-color:       var(background);
+}
