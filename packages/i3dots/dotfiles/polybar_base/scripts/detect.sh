@@ -5,16 +5,8 @@ CONF_DIR="$HOME/.config/polybar"
 
 # 0. Regenerar configuración en RAM si no existe (ej. tras reinicio)
 if [ ! -f "/dev/shm/user_configs.ini" ]; then
-    dots_cmd=""
-    VARS_FILE="$HOME/.config/i3/conf.d/vars.generated"
-    if [ -f "$VARS_FILE" ]; then
-        dots_cmd=$(grep "set \$dots_cmd" "$VARS_FILE" | cut -d' ' -f3)
-    fi
-    if [ -z "$dots_cmd" ] || [ ! -x "$dots_cmd" ]; then
-        dots_cmd=$(command -v dots)
-    fi
-    if [ -x "$dots_cmd" ]; then
-        exec "$dots_cmd" apply i3dots reload
+    if [ -f "$CONF_DIR/user_configs.ini.bak" ]; then
+        cp "$CONF_DIR/user_configs.ini.bak" "/dev/shm/user_configs.ini"
     fi
 fi
 

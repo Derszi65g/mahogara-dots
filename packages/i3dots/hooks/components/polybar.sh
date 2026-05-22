@@ -18,6 +18,7 @@ TYPE=$(echo "$TYPE" | tr -d '[:space:]'); MODE=$(echo "$MODE" | tr -d '[:space:]
 # 2. Setup de Directorio con Enlaces Simbólicos
 CONF_DIR="$HOME/.config/polybar"
 [ -f "$CONF_DIR/colors.ini" ] && cp "$CONF_DIR/colors.ini" "/tmp/poly_colors.ini"
+[ -f "$CONF_DIR/user_configs.ini.bak" ] && cp "$CONF_DIR/user_configs.ini.bak" "/tmp/poly_user_configs.ini"
 rm -rf "$CONF_DIR"
 mkdir -p "$CONF_DIR"
 
@@ -25,6 +26,10 @@ if [ -f "/tmp/poly_colors.ini" ]; then
     mv "/tmp/poly_colors.ini" "$CONF_DIR/colors.ini"
 else
     ln -sf "$PACKAGE_DIR/dotfiles/polybar_base/colors.ini" "$CONF_DIR/colors.ini"
+fi
+
+if [ -f "/tmp/poly_user_configs.ini" ]; then
+    mv "/tmp/poly_user_configs.ini" "$CONF_DIR/user_configs.ini.bak"
 fi
 
 ln -sf "$PACKAGE_DIR/dotfiles/polybar_base/hardware.ini" "$CONF_DIR/hardware.ini"
@@ -125,6 +130,8 @@ icon-vol = 󰕾
 icon-light = 󰃠
 icon-bat = 󱊣
 EOF
+
+cp "$RAM_CONFIG" "$CONF_DIR/user_configs.ini.bak"
 
 # 5. Configuración de entrada única para Polybar
 cat > "$CONF_DIR/config.ini" <<EOF
