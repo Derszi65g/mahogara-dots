@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 # $1 es el valor del .txt (ej: waybar_base.css)
 
+# 0. Protocolo de Consulta para el Core
+if [ "$1" == "--query" ]; then
+    echo "themes_dir=$PACKAGE_DIR/dotfiles/waybar/themes"
+    echo "default_theme=waybar_base"
+    echo "height_options=20px\n24px\n28px\n32px"
+    echo "height_unit=px"
+    echo "has_modes=false"
+    exit 0
+fi
+
 # 1. Leer Estilo, Posición y Transparencia desde el estado
 STYLE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/style" 2>/dev/null || echo "$BAR_STYLE")
 POS=$(cat "$STATE_DIR/$CURRENT_ENV/bar/position" 2>/dev/null || echo "$BAR_POSITION")
