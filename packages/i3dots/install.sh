@@ -41,10 +41,10 @@ print_sub_err() {
 # Mostrar Banner
 echo -e "${CYAN}${BOLD}"
 cat << "EOF"
- _ _____    _       _   
-(_|___ / __| | / _ \|  _/ __|
-| |___) | (_| | (_) | |_ \__ \
-|_|____/ \__,_|\___/ \__|___/
+▗▄▄▄▖▄▄▄▄ ▗▄▄▄   ▗▄▖▗▄▄▄▖▗▄▄▖
+  █     █ ▐▌  █ ▐▌ ▐▌ █ ▐▌
+  █  ▀▀▀█ ▐▌  █ ▐▌ ▐▌ █  ▝▀▚▖
+▗▄█▄▖▄▄▄█ ▐▙▄▄▀ ▝▚▄▞▘ █ ▗▄▄▞▘
           by loonyx
 EOF
 echo -e "${NC}"
@@ -268,4 +268,3 @@ if command -v gsettings &> /dev/null; then
 fi
 
 print_success "Instalación completada correctamente para variante: ${VARIANT_NAME}"
-
