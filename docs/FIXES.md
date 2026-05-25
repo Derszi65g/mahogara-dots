@@ -1,6 +1,6 @@
 # Correcciones Técnicas y Soporte de Variantes
 
-Este documento detalla los cambios realizados para mejorar la detección de variantes y la fiabilidad de la instalación en el sistema `mahogara-dots`.
+Este documento detalla los cambios realizados para mejorar la detección de variantes y la fiabilidad de la instalación en el sistema de dotfiles.
 
 ## 1. Detección Inteligente de Argumentos (Orquestador `dots`)
 
