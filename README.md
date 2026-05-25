@@ -32,9 +32,9 @@ Orquestador modular diseñado para la portabilidad absoluta. Gestiona entornos (
 # Ejemplo: Aplicar configuración actual (alias de install)
 ./dots apply swaydots
 
-./dots run <paquete> <accion> [argumentos]
+./dots <paquete> <accion> [argumentos]
 # Ejemplo: Ejecutar solo el lanzador de swaydots
-./dots run swaydots launcher
+./dots swaydots launcher
 ```
 Nota: Si no se especifica comando, el sistema intentará detectar si el segundo argumento es una acción (secuencia/script). Si no lo es, se asume `install`.
 

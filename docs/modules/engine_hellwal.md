@@ -31,7 +31,7 @@ Motor de generación de colores basado en Hellwal. Se encarga de extraer la pale
 ## Uso desde `dots`
 
 ```bash
-./dots run <paquete> engine_hellwal.sh        # Generar tema oscuro
-./dots run <paquete> engine_hellwal.sh -L     # Generar tema claro
+./dots <paquete> engine_hellwal.sh        # Generar tema oscuro
+./dots <paquete> engine_hellwal.sh -L     # Generar tema claro
 ```
 

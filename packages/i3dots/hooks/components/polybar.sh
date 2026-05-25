@@ -48,7 +48,7 @@ ln -sf "$PACKAGE_DIR/dotfiles/polybar_base/scripts" "$CONF_DIR/scripts"
 THEME_SRC="$PACKAGE_DIR/dotfiles/polybar_configs/$TYPE"
 if [ -d "$THEME_SRC" ]; then
     ln -sfT "$THEME_SRC" "$CONF_DIR/current_theme"
-    ln -sf "$CONF_DIR/current_theme/launch.sh" "$CONF_DIR/launch.sh"
+    ln -sf "current_theme/launch.sh" "$CONF_DIR/launch.sh"
     
     # Ejecutar setup.sh específico del tema si existe (evita hardcodeo)
     [ -f "$THEME_SRC/setup.sh" ] && source "$THEME_SRC/setup.sh"
@@ -129,6 +129,7 @@ prefix-fg = $MOD_PRE_FG
 rofi-bg = $MOD_ROFI_BG
 rofi-fg = $MOD_ROFI_FG
 launcher-icon = $LAUNCH_ICON
+dots-cmd = ${BASE_DIR:-$PROJECT_ROOT}/dots
 
 ; Icon Library
 icon-cpu = 

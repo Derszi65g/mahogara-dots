@@ -10,13 +10,13 @@ Se ha mejorado la lógica de parseo de argumentos para diferenciar entre **Accio
 Anteriormente, la detección automática podía causar colisiones si el nombre de una variante coincidía con el de una acción. Además, se ejecutaba `install.sh` incluso para acciones rápidas, lo cual era innecesario.
 
 ### La Solución
-Se han añadido los comandos `install`, `apply` y `run`:
+Se han añadido los comandos `install` y `apply` para separar la instalación completa de las acciones rápidas:
 1. **`install` / `apply`**: Comandos dedicados a la instalación y aplicación completa. Ignoran la detección de acciones para sus argumentos, tratándolos siempre como variantes. Ejecutan siempre `install.sh`.
-2. **`run`**: Comando para ejecutar acciones específicas (secuencias o scripts). No ejecuta `install.sh`, lo que agiliza la ejecución de utilidades y scripts rápidos.
+2. **Ejecución Directa (sin comando)**: Al llamar `./dots <paquete> <acción>` se ejecutan acciones específicas (secuencias o scripts). No ejecuta `install.sh`, lo que agiliza la ejecución de utilidades y scripts rápidos.
 
 La detección automática (sin comando explícito) se mantiene por compatibilidad:
-- Si el argumento coincide con una acción, se comporta como `run`.
-- Si no coincide, se comporta como `install`.
+- Si el segundo argumento coincide con una acción, ejecuta la acción directamente sin instalar.
+- Si no coincide, se comporta como `install` con variantes.
 
 **Ejemplo de uso:**
 ```bash
@@ -24,7 +24,7 @@ La detección automática (sin comando explícito) se mantiene por compatibilida
 ./dots install i3dots void
 
 # Ejecutar una acción sin pasar por install.sh
-./dots run i3dots launcher
+./dots i3dots launcher
 ```
 
 
