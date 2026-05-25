@@ -21,7 +21,7 @@ Menú de apagado/reinicio universal. Permite personalizar etiquetas (iconos o te
 | `POWERMENU_CMD_SHUTDOWN` | Comando a ejecutar para apagar. | `systemctl poweroff` |
 | `POWERMENU_CMD_REBOOT` | Comando a ejecutar para reiniciar. | `systemctl reboot` |
 | `POWERMENU_CMD_SUSPEND` | Comando a ejecutar para suspender. | `systemctl suspend` |
-| `POWERMENU_CMD_LOGOUT` | Comando a ejecutar para cerrar sesión. | `loginctl terminate-user $USER` |
+| `POWERMENU_CMD_LOGOUT` | Comando a ejecutar para cerrar sesión. | `loginctl terminate-session "${XDG_SESSION_ID:-}"` |
 
 ## Ejemplo de Configuración
 
