@@ -6,7 +6,7 @@ if [ "$1" == "--query" ]; then
     CUR_TYPE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/type" 2>/dev/null | tr -d '[:space:]' || echo "polybar_antigua")
     THEME_SRC="$PACKAGE_DIR/dotfiles/polybar_configs/$CUR_TYPE"
     
-    SUPPORTED="style:Style:round,square|position:Position:top,bottom|transparency:Transparency:true,false|mode:Mode:solid,underline"
+    SUPPORTED="style:Style:round,square|position:Position:top,bottom|transparency:Transparency:true,false"
     if [ -f "$THEME_SRC/options.conf" ]; then
         CUSTOM_OPTS=$(grep -v '^#' "$THEME_SRC/options.conf" | grep -v '^$' | paste -sd '|' -)
         if [ -n "$CUSTOM_OPTS" ]; then
