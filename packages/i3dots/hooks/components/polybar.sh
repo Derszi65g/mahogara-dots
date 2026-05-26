@@ -31,12 +31,14 @@ HEIGHT=$(cat "$STATE_DIR/$CURRENT_ENV/bar/height" 2>/dev/null || echo "$BAR_HEIG
 TYPE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/type" 2>/dev/null | tr -d '[:space:]' || echo "$BAR_DEFAULT_TYPE")
 MODE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/mode" 2>/dev/null | tr -d '[:space:]' || echo "solid")
 ROFI_STYLE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/rofi_style" 2>/dev/null || echo "solid")
+SOLID_LINE=$(cat "$STATE_DIR/$CURRENT_ENV/bar/solid_line" 2>/dev/null || echo "true")
 
 # Limpiar espacios
 STYLE=$(echo "$STYLE" | tr -d '[:space:]'); POS=$(echo "$POS" | tr -d '[:space:]')
 TRANS=$(echo "$TRANS" | tr -d '[:space:]'); HEIGHT=$(echo "$HEIGHT" | tr -d '[:space:]')
 TYPE=$(echo "$TYPE" | tr -d '[:space:]'); MODE=$(echo "$MODE" | tr -d '[:space:]')
 ROFI_STYLE=$(echo "$ROFI_STYLE" | tr -d '[:space:]')
+SOLID_LINE=$(echo "$SOLID_LINE" | tr -d '[:space:]')
 [[ -z "$HEIGHT" ]] && HEIGHT="15pt"
 
 # 2. Setup de Directorio con Enlaces Simbólicos
@@ -90,8 +92,14 @@ F_ROFI_SIZE=$(( H_NUM * 4 / 5 + 1 ))
 R_ROFI_OFFSET=$F_OFFSET
 F_ROFI_NAME="Symbols Nerd Font Mono"
 
-LINE_SIZE=$(( H_NUM / 6 ))
-[[ $LINE_SIZE -lt 2 ]] && LINE_SIZE=2
+if [ "$MODE" == "underline" ] || [ "$SOLID_LINE" == "true" ]; then
+    LINE_SIZE=$(( H_NUM / 6 ))
+    [[ $LINE_SIZE -lt 2 ]] && LINE_SIZE=2
+else
+    LINE_SIZE=0
+fi
+
+
 
 if [ "$MODE" == "underline" ]; then
     F_SYM=$(( H_NUM * 11 / 20 + 1 ))
@@ -111,7 +119,8 @@ if [ "$MODE" == "underline" ]; then
     [[ $F_CURV_OFFSET -lt 1 ]] && F_CURV_OFFSET=1
 else
     F_SYM=$(( H_NUM * 11 / 20 + 1 ))
-    F_OFFSET_SYM=$(( (H_NUM - F_SYM) / 2 - LINE_SIZE - 1 ))
+    F_OFFSET_SYM=$(( (H_NUM - LINE_SIZE - F_SYM) / 2 - 1 ))
+    [[ $F_OFFSET_SYM -lt 0 ]] && F_OFFSET_SYM=0
     F_LARGE_SIZE=$(( F_ICON + 4 ))
     F_OFFSET_TEXT=$(( (H_NUM - LINE_SIZE - F_TEXT) / 2 ))
     [[ $F_OFFSET_TEXT -lt 0 ]] && F_OFFSET_TEXT=0
@@ -152,7 +161,7 @@ if [ "$MODE" == "underline" ]; then
 else
     MOD_FOC_BG="\${colors.primary}"
     MOD_FOC_FG="\${colors.background-solid}"
-    MOD_FOC_UND="\${colors.primary}"
+    MOD_FOC_UND=""
     MOD_PRE_BG="\${colors.primary}"
     MOD_PRE_FG="\${colors.background-solid}"
     
