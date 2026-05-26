@@ -118,8 +118,8 @@ if [ "$MODE" == "underline" ]; then
     F_CURV_OFFSET=$F_OFFSET_TEXT
     [[ $F_CURV_OFFSET -lt 1 ]] && F_CURV_OFFSET=1
 else
-    F_SYM=$(( H_NUM * 11 / 20 + 1 ))
-    F_OFFSET_SYM=$(( (H_NUM - LINE_SIZE - F_SYM) / 2 - 1 ))
+    F_SYM=$(( H_NUM * 13 / 20 + 1 ))
+    F_OFFSET_SYM=$(( (H_NUM - F_SYM) / 2 ))
     [[ $F_OFFSET_SYM -lt 0 ]] && F_OFFSET_SYM=0
     F_LARGE_SIZE=$(( F_ICON + 4 ))
     F_OFFSET_TEXT=$(( (H_NUM - LINE_SIZE - F_TEXT) / 2 ))
